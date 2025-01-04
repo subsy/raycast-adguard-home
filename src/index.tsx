@@ -114,7 +114,7 @@ export default function Command() {
           <List.Item
             title="DNS Queries Today"
             icon={Icon.Document}
-            accessories={[{ text: status?.dns_queries_today?.toString() ?? "0" }]}
+            accessories={[{ text: status?.dns_queries?.toString() ?? "0" }]}
           />
           <List.Item
             title="Blocked Queries Today"

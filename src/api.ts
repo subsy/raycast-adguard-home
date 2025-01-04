@@ -10,6 +10,8 @@ interface Preferences {
 export interface Status {
   protection_enabled: boolean;
   filtering_enabled: boolean;
+  dns_queries: number;
+  blocked_today: number;
 }
 
 export interface Stats {

@@ -40,14 +40,30 @@ export default function Command() {
     return { name, count, percentage };
   }
 
+  function getDomainTypeInfo(domain: string): { icon: Icon; color: Color } {
+    if (domain.includes("ads") || domain.includes("track")) {
+      return { icon: Icon.XMarkCircle, color: Color.Red };
+    } else if (domain.includes("analytics")) {
+      return { icon: Icon.LineChart, color: Color.Orange };
+    } else if (domain.includes("telemetry")) {
+      return { icon: Icon.Network, color: Color.Yellow };
+    } else if (domain.includes("metric")) {
+      return { icon: Icon.Circle, color: Color.Purple };
+    } else {
+      return { icon: Icon.Globe, color: Color.Blue };
+    }
+  }
+
   return (
     <List isLoading={isLoading}>
       {items.map((item, index) => {
         const { name, count, percentage } = getNameAndCount(item);
+        const { icon, color } = getDomainTypeInfo(name.toLowerCase());
         return (
           <List.Item
             key={index}
             title={name}
+            icon={{ source: icon, tintColor: color }}
             accessories={[
               { text: `${count.toLocaleString()} (${percentage}%)` }
             ]}
