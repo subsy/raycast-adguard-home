@@ -31,6 +31,7 @@ export function CustomRules({ rules, isLoading, onRuleChange }: CustomRulesProps
       await addCustomRule(rule);
       onRuleChange();
       showToast({ style: Toast.Style.Success, title: "Rule added successfully" });
+      setShowAddForm(false);
     } catch (error) {
       showToast({
         style: Toast.Style.Failure,
@@ -38,6 +39,10 @@ export function CustomRules({ rules, isLoading, onRuleChange }: CustomRulesProps
         message: String(error),
       });
     }
+  }
+
+  async function handleFormSubmit(values: { rule: string }) {
+    await handleAddRule(values.rule);
   }
 
   async function handleRemoveRule(rule: string) {
@@ -106,10 +111,7 @@ export function CustomRules({ rules, isLoading, onRuleChange }: CustomRulesProps
             <ActionPanel>
               <Action.SubmitForm
                 title="Add Rule"
-                onSubmit={({ rule }) => {
-                  handleAddRule(rule);
-                  setShowAddForm(false);
-                }}
+                onSubmit={handleFormSubmit}
               />
               <Action
                 title="Cancel"

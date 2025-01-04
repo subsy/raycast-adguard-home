@@ -1,34 +1,9 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { CustomRules } from "../CustomRules";
 import { addCustomRule, removeCustomRule } from "../../api";
-
-// Mock the Raycast API
-jest.mock("@raycast/api", () => ({
-  List: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  ActionPanel: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  Action: ({ onAction, title }: { onAction: () => void; title: string }) => (
-    <button onClick={onAction}>{title}</button>
-  ),
-  Icon: {
-    Globe: "globe",
-    CheckCircle: "check",
-    XMarkCircle: "x",
-    Filter: "filter",
-    ExclamationMark: "!",
-    Trash: "trash",
-    Plus: "plus",
-  },
-  Color: {
-    Blue: "blue",
-    Green: "green",
-    Red: "red",
-    Orange: "orange",
-    Purple: "purple",
-  },
-  showToast: jest.fn(),
-  confirmAlert: jest.fn().mockResolvedValue(true),
-}));
+import { Toast, showToast } from "@raycast/api";
 
 // Mock the API functions
 jest.mock("../../api", () => ({
@@ -37,6 +12,11 @@ jest.mock("../../api", () => ({
 }));
 
 describe("CustomRules", () => {
+  const setup = async () => {
+    const user = userEvent.setup();
+    return { user };
+  };
+
   const mockRules = [
     { enabled: true, text: "||example.com^" },
     { enabled: false, text: "@@allowlist.com" },
@@ -69,6 +49,7 @@ describe("CustomRules", () => {
   });
 
   it("handles rule removal", async () => {
+    const { user } = await setup();
     (removeCustomRule as jest.Mock).mockResolvedValueOnce(undefined);
 
     render(
@@ -80,7 +61,7 @@ describe("CustomRules", () => {
     );
 
     const removeButtons = screen.getAllByTitle("Remove Rule");
-    fireEvent.click(removeButtons[0]);
+    await user.click(removeButtons[0]);
 
     await waitFor(() => {
       expect(removeCustomRule).toHaveBeenCalledWith("||example.com^");
@@ -89,6 +70,7 @@ describe("CustomRules", () => {
   });
 
   it("handles rule addition", async () => {
+    const { user } = await setup();
     (addCustomRule as jest.Mock).mockResolvedValueOnce(undefined);
 
     render(
@@ -100,12 +82,16 @@ describe("CustomRules", () => {
     );
 
     // Open add form
-    fireEvent.click(screen.getByTitle("Add Rule"));
+    const addButtons = screen.getAllByTitle("Add Rule");
+    await user.click(addButtons[0]);
 
     // Fill and submit form
     const input = screen.getByPlaceholderText("Enter filtering rule (e.g., ||example.com^)");
-    fireEvent.change(input, { target: { value: "||newdomain.com^" } });
-    fireEvent.click(screen.getByText("Add Rule"));
+    await user.type(input, "||newdomain.com^");
+
+    const form = screen.getByTestId("form");
+    const submitButton = within(form).getByRole('button', { name: 'Add Rule' });
+    await user.click(submitButton);
 
     await waitFor(() => {
       expect(addCustomRule).toHaveBeenCalledWith("||newdomain.com^");
@@ -126,6 +112,7 @@ describe("CustomRules", () => {
   });
 
   it("handles API errors gracefully", async () => {
+    const { user } = await setup();
     const error = new Error("API Error");
     (removeCustomRule as jest.Mock).mockRejectedValueOnce(error);
 
@@ -138,10 +125,13 @@ describe("CustomRules", () => {
     );
 
     const removeButtons = screen.getAllByTitle("Remove Rule");
-    fireEvent.click(removeButtons[0]);
+    await user.click(removeButtons[0]);
 
     await waitFor(() => {
-      expect(screen.getByText("Failed to remove rule")).toBeInTheDocument();
+      expect(showToast).toHaveBeenCalledWith(expect.objectContaining({
+        style: Toast.Style.Failure,
+        title: "Failed to remove rule"
+      }));
     });
   });
 }); 
