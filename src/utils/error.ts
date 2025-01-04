@@ -14,4 +14,4 @@ export async function handleApiError<T>(
     });
     return undefined;
   }
-} 
+}

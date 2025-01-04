@@ -1,7 +1,4 @@
 import React from "react";
-import { List, ActionPanel, Action } from "@raycast/api";
-import { useState, useEffect } from "react";
-import { getCustomRules, CustomRule, getAdGuardHomeUrl } from "./api";
 import { CustomRules } from "./components/CustomRules";
 
 export default function Command() {
@@ -23,11 +20,5 @@ export default function Command() {
     fetchCustomRules();
   }, []);
 
-  return (
-    <CustomRules
-      rules={customRules}
-      isLoading={isLoading}
-      onRuleChange={fetchCustomRules}
-    />
-  );
-} 
+  return <CustomRules rules={customRules} isLoading={isLoading} onRuleChange={fetchCustomRules} />;
+}

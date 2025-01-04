@@ -15,4 +15,4 @@ export function DomainListItem({ domain, count, actions }: DomainListItemProps) 
       actions={actions}
     />
   );
-} 
+}

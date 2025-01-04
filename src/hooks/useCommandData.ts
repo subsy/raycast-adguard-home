@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function useCommandData<T>(
-  fetchFn: () => Promise<T>,
-  defaultValue: T,
-  refreshInterval?: number
-) {
+export function useCommandData<T>(fetchFn: () => Promise<T>, defaultValue: T, refreshInterval?: number) {
   const [data, setData] = useState<T>(defaultValue);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -21,7 +17,7 @@ export function useCommandData<T>(
     }
 
     fetchData();
-    
+
     if (refreshInterval) {
       const interval = setInterval(fetchData, refreshInterval);
       return () => clearInterval(interval);
@@ -29,4 +25,4 @@ export function useCommandData<T>(
   }, [fetchFn, refreshInterval]);
 
   return { data, isLoading };
-} 
+}

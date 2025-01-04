@@ -15,7 +15,7 @@ export default function Command() {
       const data = await getDetailedStats();
       const topItems = data.top_blocked_domains?.slice(0, 10) || [];
       setItems(topItems);
-      
+
       // Calculate total count
       const total = topItems.reduce((sum, item) => {
         const [, count] = Object.entries(item)[0];
@@ -64,26 +64,21 @@ export default function Command() {
             key={index}
             title={name}
             icon={{ source: icon, tintColor: color }}
-            accessories={[
-              { text: `${count.toLocaleString()} (${percentage}%)` }
-            ]}
+            accessories={[{ text: `${count.toLocaleString()} (${percentage}%)` }]}
             actions={
               <ActionPanel>
                 <ActionPanel.Section>
-                  <Action.OpenInBrowser
-                    title="Open in AdGuard Home"
-                    url={`${getAdGuardHomeUrl()}/#`}
-                  />
+                  <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#`} />
                 </ActionPanel.Section>
                 <ActionPanel.Section>
-                  <Action 
+                  <Action
                     title="Refresh"
                     icon={Icon.ArrowClockwise}
                     onAction={fetchData}
                     shortcut={{ modifiers: ["cmd"], key: "r" }}
                   />
                   <Action
-                    title={isAutoRefreshEnabled ? "Disable Auto-Refresh" : "Enable Auto-Refresh"}
+                    title={isAutoRefreshEnabled ? "Disable Auto-refresh" : "Enable Auto-refresh"}
                     icon={isAutoRefreshEnabled ? Icon.Stop : Icon.Play}
                     onAction={toggleAutoRefresh}
                     shortcut={{ modifiers: ["cmd", "shift"], key: "r" }}
@@ -96,4 +91,4 @@ export default function Command() {
       })}
     </List>
   );
-} 
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import { List, ActionPanel, Action, Icon, Color } from "@raycast/api";
+import { List, ActionPanel, Action, Icon } from "@raycast/api";
 import { useState, useEffect } from "react";
 import { getDetailedStats, getAdGuardHomeUrl } from "./api";
 import { useAutoRefresh } from "./hooks/useAutoRefresh";
@@ -15,7 +15,7 @@ export default function Command() {
       const data = await getDetailedStats();
       const topClients = data.top_clients?.slice(0, 10) || [];
       setItems(topClients);
-      
+
       // Calculate total count
       const total = topClients.reduce((sum, item) => {
         const [, count] = Object.entries(item)[0];
@@ -48,26 +48,21 @@ export default function Command() {
           <List.Item
             key={index}
             title={name}
-            accessories={[
-              { text: `${count.toLocaleString()} (${percentage}%)` }
-            ]}
+            accessories={[{ text: `${count.toLocaleString()} (${percentage}%)` }]}
             actions={
               <ActionPanel>
                 <ActionPanel.Section>
-                  <Action.OpenInBrowser
-                    title="Open in AdGuard Home"
-                    url={`${getAdGuardHomeUrl()}/#`}
-                  />
+                  <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#`} />
                 </ActionPanel.Section>
                 <ActionPanel.Section>
-                  <Action 
+                  <Action
                     title="Refresh"
                     icon={Icon.ArrowClockwise}
                     onAction={fetchData}
                     shortcut={{ modifiers: ["cmd"], key: "r" }}
                   />
                   <Action
-                    title={isAutoRefreshEnabled ? "Disable Auto-Refresh" : "Enable Auto-Refresh"}
+                    title={isAutoRefreshEnabled ? "Disable Auto-refresh" : "Enable Auto-refresh"}
                     icon={isAutoRefreshEnabled ? Icon.Stop : Icon.Play}
                     onAction={toggleAutoRefresh}
                     shortcut={{ modifiers: ["cmd", "shift"], key: "r" }}
@@ -80,4 +75,4 @@ export default function Command() {
       })}
     </List>
   );
-} 
+}

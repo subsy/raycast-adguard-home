@@ -25,4 +25,4 @@ export function QueryLog({ entries, isLoading }: QueryLogProps) {
       ))}
     </List>
   );
-} 
+}

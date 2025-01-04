@@ -36,35 +36,38 @@ export default function Command() {
           key={index}
           title={entry.question.name}
           subtitle={entry.client}
-          icon={{ source: entry.blocked ? Icon.XMarkCircle : Icon.CheckCircle, tintColor: entry.blocked ? Color.Red : Color.Green }}
+          icon={{
+            source: entry.blocked ? Icon.XMarkCircle : Icon.CheckCircle,
+            tintColor: entry.blocked ? Color.Red : Color.Green,
+          }}
           accessories={[
             { text: new Date(entry.time).toLocaleTimeString() },
-            { 
+            {
               text: entry.blocked ? "Blocked" : "Allowed",
-              icon: { source: entry.blocked ? Icon.XMarkCircle : Icon.CheckCircle, tintColor: entry.blocked ? Color.Red : Color.Green }
+              icon: {
+                source: entry.blocked ? Icon.XMarkCircle : Icon.CheckCircle,
+                tintColor: entry.blocked ? Color.Red : Color.Green,
+              },
             },
-            { 
+            {
               text: entry.question.type,
-              tooltip: entry.reason || "No reason provided"
-            }
+              tooltip: entry.reason || "No reason provided",
+            },
           ]}
           actions={
             <ActionPanel>
               <ActionPanel.Section>
-                <Action.OpenInBrowser
-                  title="Open in AdGuard Home"
-                  url={`${getAdGuardHomeUrl()}/#logs`}
-                />
+                <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#logs`} />
               </ActionPanel.Section>
               <ActionPanel.Section>
-                <Action 
+                <Action
                   title="Refresh Query Log"
                   icon={Icon.ArrowClockwise}
                   onAction={fetchData}
                   shortcut={{ modifiers: ["cmd"], key: "r" }}
                 />
                 <Action
-                  title={isAutoRefreshEnabled ? "Disable Auto-Refresh" : "Enable Auto-Refresh"}
+                  title={isAutoRefreshEnabled ? "Disable Auto-refresh" : "Enable Auto-refresh"}
                   icon={isAutoRefreshEnabled ? Icon.Stop : Icon.Play}
                   onAction={toggleAutoRefresh}
                   shortcut={{ modifiers: ["cmd", "shift"], key: "r" }}
@@ -76,4 +79,4 @@ export default function Command() {
       ))}
     </List>
   );
-} 
+}

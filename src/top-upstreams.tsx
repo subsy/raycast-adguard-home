@@ -1,5 +1,5 @@
 import React from "react";
-import { List, ActionPanel, Action, Icon, Color } from "@raycast/api";
+import { List, ActionPanel, Action, Icon } from "@raycast/api";
 import { useState, useEffect } from "react";
 import { getDetailedStats, getAdGuardHomeUrl } from "./api";
 import { useAutoRefresh } from "./hooks/useAutoRefresh";
@@ -14,14 +14,14 @@ export default function Command() {
     try {
       const data = await getDetailedStats();
       const upstreams = data.top_upstreams_responses || [];
-      
+
       if (upstreams.length === 0) {
         setItems([{ "No upstream data available": 0 }]);
         setTotalCount(0);
       } else {
         const topItems = upstreams.slice(0, 10);
         setItems(topItems);
-        
+
         const total = topItems.reduce((sum, item) => {
           const [, count] = Object.entries(item)[0];
           return sum + count;
@@ -54,26 +54,21 @@ export default function Command() {
           <List.Item
             key={index}
             title={name}
-            accessories={count > 0 ? [
-              { text: `${count.toLocaleString()} (${percentage}%)` }
-            ] : undefined}
+            accessories={count > 0 ? [{ text: `${count.toLocaleString()} (${percentage}%)` }] : undefined}
             actions={
               <ActionPanel>
                 <ActionPanel.Section>
-                  <Action.OpenInBrowser
-                    title="Open in AdGuard Home"
-                    url={`${getAdGuardHomeUrl()}/#`}
-                  />
+                  <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#`} />
                 </ActionPanel.Section>
                 <ActionPanel.Section>
-                  <Action 
+                  <Action
                     title="Refresh"
                     icon={Icon.ArrowClockwise}
                     onAction={fetchData}
                     shortcut={{ modifiers: ["cmd"], key: "r" }}
                   />
                   <Action
-                    title={isAutoRefreshEnabled ? "Disable Auto-Refresh" : "Enable Auto-Refresh"}
+                    title={isAutoRefreshEnabled ? "Disable Auto-refresh" : "Enable Auto-refresh"}
                     icon={isAutoRefreshEnabled ? Icon.Stop : Icon.Play}
                     onAction={toggleAutoRefresh}
                     shortcut={{ modifiers: ["cmd", "shift"], key: "r" }}
@@ -86,4 +81,4 @@ export default function Command() {
       })}
     </List>
   );
-} 
+}

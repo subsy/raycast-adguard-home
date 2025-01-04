@@ -12,6 +12,6 @@ export function useAutoRefresh(fetchFunction: () => Promise<void>, interval: num
 
   return {
     isAutoRefreshEnabled,
-    toggleAutoRefresh: () => setIsAutoRefreshEnabled(prev => !prev)
+    toggleAutoRefresh: () => setIsAutoRefreshEnabled((prev) => !prev),
   };
-} 
+}

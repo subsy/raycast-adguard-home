@@ -13,13 +13,13 @@ export function CustomRules({ rules, isLoading, onRuleChange }: CustomRulesProps
   const [showAddForm, setShowAddForm] = useState(false);
 
   function getRuleTypeInfo(rule: string): { icon: Icon; color: Color; type: string } {
-    if (rule.startsWith('||') && rule.endsWith('^')) {
+    if (rule.startsWith("||") && rule.endsWith("^")) {
       return { icon: Icon.Globe, color: Color.Blue, type: "Domain" };
-    } else if (rule.startsWith('@@')) {
+    } else if (rule.startsWith("@@")) {
       return { icon: Icon.CheckCircle, color: Color.Green, type: "Allowlist" };
-    } else if (rule.startsWith('127.0.0.1') || rule.startsWith('0.0.0.0')) {
+    } else if (rule.startsWith("127.0.0.1") || rule.startsWith("0.0.0.0")) {
       return { icon: Icon.XMarkCircle, color: Color.Red, type: "Hosts Block" };
-    } else if (rule.includes('$')) {
+    } else if (rule.includes("$")) {
       return { icon: Icon.Filter, color: Color.Orange, type: "Advanced Filter" };
     } else {
       return { icon: Icon.ExclamationMark, color: Color.Purple, type: "Basic Rule" };
@@ -50,7 +50,7 @@ export function CustomRules({ rules, isLoading, onRuleChange }: CustomRulesProps
       title: "Remove Rule",
       message: "Are you sure you want to remove this rule?",
       primaryAction: {
-        title: "Remove"
+        title: "Remove",
       },
     };
 
@@ -81,10 +81,13 @@ export function CustomRules({ rules, isLoading, onRuleChange }: CustomRulesProps
               subtitle={type}
               icon={{ source: icon, tintColor: color }}
               accessories={[
-                { 
-                  icon: { source: rule.enabled ? Icon.CheckCircle : Icon.XMarkCircle, tintColor: rule.enabled ? Color.Green : Color.Red },
-                  tooltip: rule.enabled ? "Enabled" : "Disabled"
-                }
+                {
+                  icon: {
+                    source: rule.enabled ? Icon.CheckCircle : Icon.XMarkCircle,
+                    tintColor: rule.enabled ? Color.Green : Color.Red,
+                  },
+                  tooltip: rule.enabled ? "Enabled" : "Disabled",
+                },
               ]}
               actions={
                 <ActionPanel>
@@ -94,11 +97,7 @@ export function CustomRules({ rules, isLoading, onRuleChange }: CustomRulesProps
                     style={Action.Style.Destructive}
                     onAction={() => handleRemoveRule(rule.text)}
                   />
-                  <Action
-                    title="Add Rule"
-                    icon={Icon.Plus}
-                    onAction={() => setShowAddForm(true)}
-                  />
+                  <Action title="Add Rule" icon={Icon.Plus} onAction={() => setShowAddForm(true)} />
                 </ActionPanel>
               }
             />
@@ -109,24 +108,14 @@ export function CustomRules({ rules, isLoading, onRuleChange }: CustomRulesProps
         <Form
           actions={
             <ActionPanel>
-              <Action.SubmitForm
-                title="Add Rule"
-                onSubmit={handleFormSubmit}
-              />
-              <Action
-                title="Cancel"
-                onAction={() => setShowAddForm(false)}
-              />
+              <Action.SubmitForm title="Add Rule" onSubmit={handleFormSubmit} />
+              <Action title="Cancel" onAction={() => setShowAddForm(false)} />
             </ActionPanel>
           }
         >
-          <Form.TextField
-            id="rule"
-            title="Rule"
-            placeholder="Enter filtering rule (e.g., ||example.com^)"
-          />
+          <Form.TextField id="rule" title="Rule" placeholder="Enter filtering rule (e.g., ||example.com^)" />
         </Form>
       )}
     </>
   );
-} 
+}

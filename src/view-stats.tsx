@@ -29,27 +29,26 @@ export default function Command() {
       <List.Item
         title="DNS Queries Today"
         icon={{ source: Icon.Globe, tintColor: Color.Blue }}
-        accessories={[{ 
-          text: stats?.dns_queries?.toLocaleString() ?? "0",
-          icon: { source: Icon.Dot, tintColor: Color.Blue }
-        }]}
+        accessories={[
+          {
+            text: stats?.dns_queries?.toLocaleString() ?? "0",
+            icon: { source: Icon.Dot, tintColor: Color.Blue },
+          },
+        ]}
         actions={
           <ActionPanel>
             <ActionPanel.Section>
-              <Action.OpenInBrowser
-                title="Open in AdGuard Home"
-                url={`${getAdGuardHomeUrl()}/#`}
-              />
+              <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#`} />
             </ActionPanel.Section>
             <ActionPanel.Section>
-              <Action 
+              <Action
                 title="Refresh Stats"
                 icon={Icon.ArrowClockwise}
                 onAction={fetchStats}
                 shortcut={{ modifiers: ["cmd"], key: "r" }}
               />
               <Action
-                title={isAutoRefreshEnabled ? "Disable Auto-Refresh" : "Enable Auto-Refresh"}
+                title={isAutoRefreshEnabled ? "Disable Auto-refresh" : "Enable Auto-refresh"}
                 icon={isAutoRefreshEnabled ? Icon.Stop : Icon.Play}
                 onAction={toggleAutoRefresh}
                 shortcut={{ modifiers: ["cmd", "shift"], key: "r" }}
@@ -61,27 +60,33 @@ export default function Command() {
       <List.Item
         title="Blocked Queries Today"
         icon={{ source: Icon.XMarkCircle, tintColor: Color.Red }}
-        accessories={[{ 
-          text: stats?.blocked_filtering?.toLocaleString() ?? "0",
-          icon: { source: Icon.Dot, tintColor: Color.Red }
-        }]}
+        accessories={[
+          {
+            text: stats?.blocked_filtering?.toLocaleString() ?? "0",
+            icon: { source: Icon.Dot, tintColor: Color.Red },
+          },
+        ]}
       />
       <List.Item
         title="Safe Browsing Blocks"
         icon={{ source: Icon.Shield, tintColor: Color.Orange }}
-        accessories={[{ 
-          text: stats?.replaced_safebrowsing?.toLocaleString() ?? "0",
-          icon: { source: Icon.Dot, tintColor: Color.Orange }
-        }]}
+        accessories={[
+          {
+            text: stats?.replaced_safebrowsing?.toLocaleString() ?? "0",
+            icon: { source: Icon.Dot, tintColor: Color.Orange },
+          },
+        ]}
       />
       <List.Item
         title="Parental Control Blocks"
         icon={{ source: Icon.Person, tintColor: Color.Purple }}
-        accessories={[{ 
-          text: stats?.replaced_parental?.toLocaleString() ?? "0",
-          icon: { source: Icon.Dot, tintColor: Color.Purple }
-        }]}
+        accessories={[
+          {
+            text: stats?.replaced_parental?.toLocaleString() ?? "0",
+            icon: { source: Icon.Dot, tintColor: Color.Purple },
+          },
+        ]}
       />
     </List>
   );
-} 
+}

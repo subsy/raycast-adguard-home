@@ -1,3 +1,4 @@
+import React from "react";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CustomRules } from "../CustomRules";
@@ -29,13 +30,7 @@ describe("CustomRules", () => {
   });
 
   it("renders rules with correct types", () => {
-    render(
-      <CustomRules
-        rules={mockRules}
-        isLoading={false}
-        onRuleChange={mockOnRuleChange}
-      />
-    );
+    render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={mockOnRuleChange} />);
 
     expect(screen.getByText("||example.com^")).toBeInTheDocument();
     expect(screen.getByText("Domain")).toBeInTheDocument();
@@ -51,13 +46,7 @@ describe("CustomRules", () => {
     const { user } = await setup();
     (removeCustomRule as jest.Mock).mockResolvedValueOnce(undefined);
 
-    render(
-      <CustomRules
-        rules={mockRules}
-        isLoading={false}
-        onRuleChange={mockOnRuleChange}
-      />
-    );
+    render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={mockOnRuleChange} />);
 
     const removeButtons = screen.getAllByTitle("Remove Rule");
     await user.click(removeButtons[0]);
@@ -72,13 +61,7 @@ describe("CustomRules", () => {
     const { user } = await setup();
     (addCustomRule as jest.Mock).mockResolvedValueOnce(undefined);
 
-    render(
-      <CustomRules
-        rules={mockRules}
-        isLoading={false}
-        onRuleChange={mockOnRuleChange}
-      />
-    );
+    render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={mockOnRuleChange} />);
 
     // Open add form
     const addButtons = screen.getAllByTitle("Add Rule");
@@ -89,7 +72,7 @@ describe("CustomRules", () => {
     await user.type(input, "||newdomain.com^");
 
     const form = screen.getByTestId("form");
-    const submitButton = within(form).getByRole('button', { name: 'Add Rule' });
+    const submitButton = within(form).getByRole("button", { name: "Add Rule" });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -99,13 +82,7 @@ describe("CustomRules", () => {
   });
 
   it("shows loading state", () => {
-    render(
-      <CustomRules
-        rules={[]}
-        isLoading={true}
-        onRuleChange={mockOnRuleChange}
-      />
-    );
+    render(<CustomRules rules={[]} isLoading={true} onRuleChange={mockOnRuleChange} />);
 
     expect(screen.getByRole("list")).toHaveAttribute("aria-busy", "true");
   });
@@ -115,22 +92,18 @@ describe("CustomRules", () => {
     const error = new Error("API Error");
     (removeCustomRule as jest.Mock).mockRejectedValueOnce(error);
 
-    render(
-      <CustomRules
-        rules={mockRules}
-        isLoading={false}
-        onRuleChange={mockOnRuleChange}
-      />
-    );
+    render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={mockOnRuleChange} />);
 
     const removeButtons = screen.getAllByTitle("Remove Rule");
     await user.click(removeButtons[0]);
 
     await waitFor(() => {
-      expect(showToast).toHaveBeenCalledWith(expect.objectContaining({
-        style: Toast.Style.Failure,
-        title: "Failed to remove rule"
-      }));
+      expect(showToast).toHaveBeenCalledWith(
+        expect.objectContaining({
+          style: Toast.Style.Failure,
+          title: "Failed to remove rule",
+        })
+      );
     });
   });
-}); 
+});
