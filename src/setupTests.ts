@@ -6,6 +6,9 @@ import "@testing-library/jest-dom";
 import { configure } from "@testing-library/react";
 import { configure as configureDom } from "@testing-library/dom";
 
+// Configure React environment for act()
+global.IS_REACT_ACT_ENVIRONMENT = true;
+
 // Configure testing library to use React's act
 configure({
   // Disable auto-cleanup to match newer React behavior
@@ -18,6 +21,3 @@ configureDom({
   testIdAttribute: 'data-testid',
   asyncUtilTimeout: 5000,
 });
-
-// Setup test environment for act()
-global.IS_REACT_ACT_ENVIRONMENT = true;

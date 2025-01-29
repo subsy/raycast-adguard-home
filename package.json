@@ -1,7 +1,7 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "adguard-home",
-  "title": "Adguard Home",
+  "title": "AdGuard Home",
   "description": "Control your AdGuard Home instance",
   "icon": "command-icon.png",
   "version": "1.1.0",
