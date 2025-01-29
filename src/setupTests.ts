@@ -1,5 +1,5 @@
 declare global {
-  const IS_REACT_ACT_ENVIRONMENT: boolean;
+  var IS_REACT_ACT_ENVIRONMENT: boolean;
 }
 
 import "@testing-library/jest-dom";
