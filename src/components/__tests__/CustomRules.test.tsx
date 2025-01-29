@@ -1,9 +1,10 @@
 import React from "react";
-import { render, screen, waitFor, act, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CustomRules } from "../CustomRules";
 import { addCustomRule, removeCustomRule } from "../../api";
 import { Toast, showToast } from "@raycast/api";
+import { act } from 'react';
 
 // Mock the API functions
 jest.mock("../../api", () => ({
@@ -57,24 +58,34 @@ describe("CustomRules", () => {
   });
 
   it("handles rule addition", async () => {
-    const onRuleChange = jest.fn();
-    render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={onRuleChange} />);
+    const user = userEvent.setup();
+    (addCustomRule as jest.Mock).mockResolvedValueOnce(undefined);
 
+    render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={mockOnRuleChange} />);
+
+    // Open add form
+    const addButton = screen.getAllByTitle("Add Rule")[0];
     await act(async () => {
-      const firstListItem = screen.getAllByTestId("list-item")[0];
-      const addButton = within(firstListItem).getByRole("button", { name: /add rule/i });
-      await userEvent.click(addButton);
+      await user.click(addButton);
     });
 
+    // Fill and submit form
+    const input = screen.getByPlaceholderText("Enter filtering rule (e.g., ||example.com^)");
     await act(async () => {
-      await userEvent.type(screen.getByRole("textbox"), "example.com");
-      const form = screen.getByTestId("form");
-      const submitButton = within(form).getByRole("button", { name: "Add Rule" });
-      await userEvent.click(submitButton);
+      await user.type(input, "||newdomain.com^");
     });
 
-    expect(addCustomRule).toHaveBeenCalledWith("example.com");
-    expect(onRuleChange).toHaveBeenCalled();
+    // Find the submit button within the form
+    const form = screen.getByTestId("form");
+    const submitButton = within(form).getByRole("button", { name: "Add Rule" });
+    await act(async () => {
+      await user.click(submitButton);
+    });
+
+    await waitFor(() => {
+      expect(addCustomRule).toHaveBeenCalledWith("||newdomain.com^");
+      expect(mockOnRuleChange).toHaveBeenCalled();
+    });
   });
 
   it("shows loading state", () => {
