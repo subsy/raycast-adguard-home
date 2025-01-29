@@ -1,7 +1,7 @@
 import React from "react";
 import { List, Icon, ActionPanel, Action, Color, Toast, showToast } from "@raycast/api";
 import { useState, useEffect } from "react";
-import { getStatus, toggleProtection, Status, getAdGuardHomeUrl } from "./api";
+import { getStatus, toggleProtection, Status, getAdGuardHomeUrl, snoozeProtection } from "./api";
 
 export default function Command() {
   const [status, setStatus] = useState<Status | null>(null);
@@ -41,6 +41,33 @@ export default function Command() {
     }
   }
 
+  async function handleSnooze(duration: number) {
+    try {
+      await snoozeProtection(duration);
+      setStatus((prev) => (prev ? { ...prev, protection_enabled: false } : null));
+      showToast({
+        style: Toast.Style.Success,
+        title: "Protection snoozed",
+        message: `Will resume in ${duration / (60 * 1000)} minutes`,
+      });
+    } catch (error) {
+      showToast({
+        style: Toast.Style.Failure,
+        title: "Failed to snooze protection",
+        message: String(error),
+      });
+    }
+  }
+
+  async function handleSnoozeUntilTomorrow() {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    const duration = tomorrow.getTime() - now.getTime();
+    await handleSnooze(duration);
+  }
+
   useEffect(() => {
     fetchStatus();
   }, []);
@@ -74,6 +101,38 @@ export default function Command() {
                   tintColor: status?.protection_enabled ? Color.Red : Color.Green,
                 }}
               />
+              {status?.protection_enabled && (
+                <ActionPanel.Submenu
+                  title="Snooze Protection"
+                  icon={Icon.Clock}
+                >
+                  <Action
+                    title="Snooze for 1 Minute"
+                    onAction={() => handleSnooze(60 * 1000)}
+                    icon={Icon.Clock}
+                  />
+                  <Action
+                    title="Snooze for 10 Minutes"
+                    onAction={() => handleSnooze(10 * 60 * 1000)}
+                    icon={Icon.Clock}
+                  />
+                  <Action
+                    title="Snooze for 1 Hour"
+                    onAction={() => handleSnooze(60 * 60 * 1000)}
+                    icon={Icon.Clock}
+                  />
+                  <Action
+                    title="Snooze for 8 Hours"
+                    onAction={() => handleSnooze(8 * 60 * 60 * 1000)}
+                    icon={Icon.Clock}
+                  />
+                  <Action
+                    title="Snooze Until Tomorrow"
+                    onAction={() => handleSnoozeUntilTomorrow()}
+                    icon={Icon.Clock}
+                  />
+                </ActionPanel.Submenu>
+              )}
             </ActionPanel.Section>
             <ActionPanel.Section>
               <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#`} />

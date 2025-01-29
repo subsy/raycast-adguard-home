@@ -90,6 +90,30 @@ export async function toggleProtection(enabled: boolean): Promise<void> {
   }
 }
 
+export async function snoozeProtection(duration: number): Promise<void> {
+  const preferences = getPreferenceValues<Preferences>();
+  
+  // Calculate end time
+  const until = new Date(Date.now() + duration).toISOString();
+  
+  const response = await fetch(`${preferences.serverUrl}/control/protection`, {
+    method: "POST",
+    headers: {
+      ...getAuthHeaders(),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ 
+      enabled: false,
+      duration: duration,
+      until: until
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to snooze protection: ${response.statusText}`);
+  }
+}
+
 export async function getQueryLog(limit = 20): Promise<QueryLogEntry[]> {
   const preferences = getPreferenceValues<Preferences>();
   const url = new URL(`${preferences.serverUrl}/control/querylog`);

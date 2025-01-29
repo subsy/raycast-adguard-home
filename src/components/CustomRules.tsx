@@ -2,6 +2,7 @@ import React from "react";
 import { List, ActionPanel, Action, Icon, showToast, Toast, Form, confirmAlert, Color } from "@raycast/api";
 import { useState } from "react";
 import { CustomRule, addCustomRule, removeCustomRule } from "../api";
+import { act } from "react";
 
 interface CustomRulesProps {
   rules: CustomRule[];

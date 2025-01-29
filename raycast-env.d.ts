@@ -22,6 +22,8 @@ declare type Preferences = ExtensionPreferences
 declare namespace Preferences {
   /** Preferences accessible in the `toggle-protection` command */
   export type ToggleProtection = ExtensionPreferences & {}
+  /** Preferences accessible in the `snooze-protection` command */
+  export type SnoozeProtection = ExtensionPreferences & {}
   /** Preferences accessible in the `view-stats` command */
   export type ViewStats = ExtensionPreferences & {}
   /** Preferences accessible in the `top-clients` command */
@@ -41,6 +43,8 @@ declare namespace Preferences {
 declare namespace Arguments {
   /** Arguments passed to the `toggle-protection` command */
   export type ToggleProtection = {}
+  /** Arguments passed to the `snooze-protection` command */
+  export type SnoozeProtection = {}
   /** Arguments passed to the `view-stats` command */
   export type ViewStats = {}
   /** Arguments passed to the `top-clients` command */
