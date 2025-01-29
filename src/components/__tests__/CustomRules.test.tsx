@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { CustomRules } from "../CustomRules";
 import { addCustomRule, removeCustomRule } from "../../api";
 import { Toast, showToast } from "@raycast/api";
-import { act } from 'react';
+import { act } from "react";
 
 // Mock the API functions
 jest.mock("../../api", () => ({

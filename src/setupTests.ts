@@ -1,5 +1,5 @@
 declare global {
-  var IS_REACT_ACT_ENVIRONMENT: boolean;
+  const IS_REACT_ACT_ENVIRONMENT: boolean;
 }
 
 import "@testing-library/jest-dom";
@@ -18,6 +18,6 @@ configure({
 
 // Configure DOM testing library
 configureDom({
-  testIdAttribute: 'data-testid',
+  testIdAttribute: "data-testid",
   asyncUtilTimeout: 5000,
 });

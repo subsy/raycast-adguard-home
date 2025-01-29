@@ -24,36 +24,36 @@ export default function Command() {
 
   useEffect(() => {
     if (!snoozeEndTime) return;
-    
+
     const interval = setInterval(() => {
       const now = new Date();
       const diff = snoozeEndTime.getTime() - now.getTime();
-      
+
       if (diff <= 0) {
         setSnoozeEndTime(null);
         setRemainingTime("");
         fetchStatus();
         return;
       }
-      
+
       if (diff % (5 * 1000) === 0) {
         fetchStatus();
       }
-      
+
       const seconds = Math.floor(diff / 1000);
       const hours = Math.floor(seconds / 3600);
       const minutes = Math.floor((seconds % 3600) / 60);
       const remainingSeconds = seconds % 60;
-      
+
       setRemainingTime(
-        hours > 0 
+        hours > 0
           ? `${hours}h ${minutes}m ${remainingSeconds}s`
           : minutes > 0
           ? `${minutes}m ${remainingSeconds}s`
           : `${remainingSeconds}s`
       );
     }, 500);
-    
+
     return () => clearInterval(interval);
   }, [snoozeEndTime]);
 
@@ -141,9 +141,11 @@ export default function Command() {
         }}
         accessories={[
           {
-            text: status?.protection_enabled 
-              ? "Protection Active" 
-              : remainingTime ? `Disabled (${remainingTime} remaining)` : "Protection Disabled",
+            text: status?.protection_enabled
+              ? "Protection Active"
+              : remainingTime
+              ? `Disabled (${remainingTime} remaining)`
+              : "Protection Disabled",
             icon: {
               source: status?.protection_enabled ? Icon.CheckCircle : Icon.Clock,
               tintColor: status?.protection_enabled ? Color.Green : Color.Orange,
@@ -162,25 +164,14 @@ export default function Command() {
                 }}
               />
               {status?.protection_enabled && (
-                <ActionPanel.Submenu
-                  title="Disable Protection"
-                  icon={Icon.Clock}
-                >
-                  <Action
-                    title="Disable for 1 Minute"
-                    onAction={() => handleDisable(60 * 1000)}
-                    icon={Icon.Clock}
-                  />
+                <ActionPanel.Submenu title="Disable Protection" icon={Icon.Clock}>
+                  <Action title="Disable for 1 Minute" onAction={() => handleDisable(60 * 1000)} icon={Icon.Clock} />
                   <Action
                     title="Disable for 10 Minutes"
                     onAction={() => handleDisable(10 * 60 * 1000)}
                     icon={Icon.Clock}
                   />
-                  <Action
-                    title="Disable for 1 Hour"
-                    onAction={() => handleDisable(60 * 60 * 1000)}
-                    icon={Icon.Clock}
-                  />
+                  <Action title="Disable for 1 Hour" onAction={() => handleDisable(60 * 60 * 1000)} icon={Icon.Clock} />
                   <Action
                     title="Disable for 8 Hours"
                     onAction={() => handleDisable(8 * 60 * 60 * 1000)}

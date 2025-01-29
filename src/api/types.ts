@@ -5,4 +5,4 @@ export interface Status {
   blocked_today: number;
   protection_disabled_duration: number | null;
   protection_disabled_until: string | null;
-} 
+}

@@ -38,11 +38,11 @@ describe("SnoozeProtection API", () => {
   it("handles API errors", async () => {
     const error = new Error("API Error");
     (disableProtection as jest.Mock).mockRejectedValueOnce(error);
-    
+
     try {
       await disableProtection(60 * 1000);
     } catch (e) {
       expect(e).toBe(error);
     }
   });
-}); 
+});

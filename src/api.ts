@@ -12,8 +12,8 @@ export interface Status {
   filtering_enabled: boolean;
   dns_queries: number;
   blocked_today: number;
-  protection_disabled_duration?: number;  // Duration in milliseconds until protection is re-enabled
-  protection_disabled_until?: string;     // ISO string of when protection will be re-enabled
+  protection_disabled_duration?: number; // Duration in milliseconds until protection is re-enabled
+  protection_disabled_until?: string; // ISO string of when protection will be re-enabled
 }
 
 export interface Stats {
@@ -95,16 +95,16 @@ export async function toggleProtection(enabled: boolean): Promise<void> {
 
 export async function disableProtection(duration: number): Promise<void> {
   const preferences = getPreferenceValues<Preferences>();
-  
+
   const response = await fetch(`${preferences.serverUrl}/control/protection`, {
     method: "POST",
     headers: {
       ...getAuthHeaders(),
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ 
+    body: JSON.stringify({
       enabled: false,
-      duration: duration  // Duration in milliseconds until re-enable
+      duration: duration, // Duration in milliseconds until re-enable
     }),
   });
 

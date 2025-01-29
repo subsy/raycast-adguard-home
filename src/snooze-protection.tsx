@@ -24,35 +24,36 @@ export default function Command() {
 
   useEffect(() => {
     if (!snoozeEndTime) return;
-    
+
     const interval = setInterval(() => {
       const now = new Date();
       const diff = snoozeEndTime.getTime() - now.getTime();
-      
+
       if (diff <= 0) {
         setSnoozeEndTime(null);
         setRemainingTime("");
         fetchStatus();
         return;
       }
-      
+
       if (diff % (5 * 1000) === 0) {
         fetchStatus();
       }
-      
+
       const seconds = Math.floor(diff / 1000);
       const hours = Math.floor(seconds / 3600);
       const minutes = Math.floor((seconds % 3600) / 60);
       const remainingSeconds = seconds % 60;
-      
-      const newRemainingTime = hours > 0 
-        ? `${hours}h ${minutes}m ${remainingSeconds}s`
-        : minutes > 0
-        ? `${minutes}m ${remainingSeconds}s`
-        : `${remainingSeconds}s`;
+
+      const newRemainingTime =
+        hours > 0
+          ? `${hours}h ${minutes}m ${remainingSeconds}s`
+          : minutes > 0
+          ? `${minutes}m ${remainingSeconds}s`
+          : `${remainingSeconds}s`;
       setRemainingTime(newRemainingTime);
     }, 500);
-    
+
     return () => clearInterval(interval);
   }, [snoozeEndTime]);
 
@@ -114,18 +115,20 @@ export default function Command() {
         title="Current Status"
         icon={{
           source: status?.protection_enabled ? Icon.CheckCircle : Icon.Clock,
-          tintColor: status?.protection_enabled ? Color.Green : Color.Orange
+          tintColor: status?.protection_enabled ? Color.Green : Color.Orange,
         }}
         accessories={[
           {
-            text: status?.protection_enabled 
-              ? "Protection Active" 
-              : remainingTime ? `Disabled (${remainingTime} remaining)` : "Protection Disabled",
+            text: status?.protection_enabled
+              ? "Protection Active"
+              : remainingTime
+              ? `Disabled (${remainingTime} remaining)`
+              : "Protection Disabled",
             icon: {
               source: status?.protection_enabled ? Icon.CheckCircle : Icon.Clock,
-              tintColor: status?.protection_enabled ? Color.Green : Color.Orange
-            }
-          }
+              tintColor: status?.protection_enabled ? Color.Green : Color.Orange,
+            },
+          },
         ]}
       />
       <List.Section title="Disable Protection">
@@ -134,11 +137,7 @@ export default function Command() {
           icon={Icon.Clock}
           actions={
             <ActionPanel>
-              <Action
-                title="Disable for 1 Minute"
-                onAction={() => handleDisable(60 * 1000)}
-                icon={Icon.Clock}
-              />
+              <Action title="Disable for 1 Minute" onAction={() => handleDisable(60 * 1000)} icon={Icon.Clock} />
             </ActionPanel>
           }
         />
@@ -147,11 +146,7 @@ export default function Command() {
           icon={Icon.Clock}
           actions={
             <ActionPanel>
-              <Action
-                title="Disable for 10 Minutes"
-                onAction={() => handleDisable(10 * 60 * 1000)}
-                icon={Icon.Clock}
-              />
+              <Action title="Disable for 10 Minutes" onAction={() => handleDisable(10 * 60 * 1000)} icon={Icon.Clock} />
             </ActionPanel>
           }
         />
@@ -160,11 +155,7 @@ export default function Command() {
           icon={Icon.Clock}
           actions={
             <ActionPanel>
-              <Action
-                title="Disable for 1 Hour"
-                onAction={() => handleDisable(60 * 60 * 1000)}
-                icon={Icon.Clock}
-              />
+              <Action title="Disable for 1 Hour" onAction={() => handleDisable(60 * 60 * 1000)} icon={Icon.Clock} />
             </ActionPanel>
           }
         />
@@ -186,15 +177,11 @@ export default function Command() {
           icon={Icon.Clock}
           actions={
             <ActionPanel>
-              <Action
-                title="Disable Until Tomorrow"
-                onAction={handleDisableUntilTomorrow}
-                icon={Icon.Clock}
-              />
+              <Action title="Disable Until Tomorrow" onAction={handleDisableUntilTomorrow} icon={Icon.Clock} />
             </ActionPanel>
           }
         />
       </List.Section>
     </List>
   );
-} 
+}
