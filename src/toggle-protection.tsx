@@ -85,6 +85,7 @@ export default function Command() {
       const newState = !status.protection_enabled;
       await toggleProtection(newState);
       setStatus((prev) => (prev ? { ...prev, protection_enabled: newState } : null));
+      setStatus((prev) => (prev ? { ...prev, protection_enabled: newState } : null));
       showToast({
         style: Toast.Style.Success,
         title: `Protection ${newState ? "enabled" : "disabled"}`,
@@ -159,7 +160,9 @@ export default function Command() {
                 title={status?.protection_enabled ? "Disable Protection" : "Enable Protection"}
                 onAction={handleToggleProtection}
                 icon={{
+                icon={{
                   source: status?.protection_enabled ? Icon.XMarkCircle : Icon.CheckCircle,
+                  tintColor: status?.protection_enabled ? Color.Red : Color.Green,
                   tintColor: status?.protection_enabled ? Color.Red : Color.Green,
                 }}
               />
@@ -188,6 +191,8 @@ export default function Command() {
             <ActionPanel.Section>
               <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#`} />
               <Action
+              <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#`} />
+              <Action
                 title="Refresh Status"
                 icon={Icon.ArrowClockwise}
                 onAction={fetchStatus}
@@ -199,4 +204,6 @@ export default function Command() {
       />
     </List>
   );
+}
+
 }
