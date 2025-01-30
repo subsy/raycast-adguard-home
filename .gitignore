@@ -50,7 +50,3 @@ compiled_raycast_swift
 # Archives
 *.tgz
 *.zip
-
-# Metadata images
-images/
-*.png
