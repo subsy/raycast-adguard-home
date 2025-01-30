@@ -69,7 +69,6 @@ export async function getStatus(): Promise<Status> {
     headers: getAuthHeaders(),
   });
 
-
   if (!response.ok) {
     throw new Error(`Failed to fetch status: ${response.statusText}`);
   }
@@ -88,7 +87,6 @@ export async function toggleProtection(enabled: boolean): Promise<void> {
     },
     body: JSON.stringify({ enabled }),
   });
-
 
   if (!response.ok) {
     throw new Error(`Failed to toggle protection: ${response.statusText}`);
@@ -152,11 +150,9 @@ export async function getFilteringRules(): Promise<FilteringRule[]> {
     headers: getAuthHeaders(),
   });
 
-
   if (!response.ok) {
     throw new Error(`Failed to fetch filtering rules: ${response.statusText}`);
   }
-
 
   return response.json();
 }
@@ -165,16 +161,13 @@ export async function getCustomRules(): Promise<CustomRule[]> {
   const preferences = getPreferenceValues<Preferences>();
   const url = `${preferences.serverUrl}/control/filtering/status`;
 
-
   const response = await fetch(url, {
     headers: getAuthHeaders(),
   });
 
-
   if (!response.ok) {
     throw new Error(`Failed to fetch custom rules: ${response.statusText}`);
   }
-
 
   const data = await response.json();
 
@@ -204,7 +197,6 @@ export async function addCustomRule(rule: string): Promise<void> {
     body: JSON.stringify({ rules: [rule] }),
   });
 
-
   if (!response.ok) {
     throw new Error(`Failed to add custom rule: ${response.statusText}`);
   }
@@ -226,7 +218,6 @@ export async function removeCustomRule(rule: string): Promise<void> {
     body: JSON.stringify({ rules: newRules.map((r) => r.text) }),
   });
 
-
   if (!response.ok) {
     throw new Error(`Failed to remove custom rule: ${response.statusText}`);
   }
@@ -235,22 +226,17 @@ export async function removeCustomRule(rule: string): Promise<void> {
 export async function getStats(): Promise<Stats> {
   const preferences = getPreferenceValues<Preferences>();
 
-
   const url = `${preferences.serverUrl}/control/stats`;
-
 
   const response = await fetch(url, {
     headers: getAuthHeaders(),
   });
 
-
   if (!response.ok) {
     throw new Error(`Failed to fetch stats: ${response.statusText}`);
   }
 
-
   const data = await response.json();
-
 
   return {
     dns_queries: data.num_dns_queries || 0,
