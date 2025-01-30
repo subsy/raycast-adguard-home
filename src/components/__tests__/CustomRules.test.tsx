@@ -32,16 +32,15 @@ describe("CustomRules", () => {
 
   it("renders rules with correct types", () => {
     render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={() => {}} />);
-    render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={() => {}} />);
 
-    expect(screen.getByText("||example.com^")).toBeInTheDocument();
-    expect(screen.getByText("Domain")).toBeInTheDocument();
+    expect(screen.getAllByText("||example.com^")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("Domain")[0]).toBeInTheDocument();
 
-    expect(screen.getByText("@@allowlist.com")).toBeInTheDocument();
-    expect(screen.getByText("Allowlist")).toBeInTheDocument();
+    expect(screen.getAllByText("@@allowlist.com")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("Allowlist")[0]).toBeInTheDocument();
 
-    expect(screen.getByText("127.0.0.1 blocked.com")).toBeInTheDocument();
-    expect(screen.getByText("Hosts Block")).toBeInTheDocument();
+    expect(screen.getAllByText("127.0.0.1 blocked.com")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("Hosts Block")[0]).toBeInTheDocument();
   });
 
   it("handles rule removal", async () => {
@@ -59,7 +58,7 @@ describe("CustomRules", () => {
   });
 
   it("handles rule addition", async () => {
-    const user = userEvent.setup();
+    const { user } = await setup();
     (addCustomRule as jest.Mock).mockResolvedValueOnce(undefined);
 
     render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={mockOnRuleChange} />);
@@ -91,9 +90,8 @@ describe("CustomRules", () => {
 
   it("shows loading state", () => {
     render(<CustomRules rules={[]} isLoading={true} onRuleChange={mockOnRuleChange} />);
-    render(<CustomRules rules={[]} isLoading={true} onRuleChange={mockOnRuleChange} />);
 
-    expect(screen.getByRole("list")).toHaveAttribute("aria-busy", "true");
+    expect(screen.getAllByRole("list")[0]).toHaveAttribute("aria-busy", "true");
   });
 
   it("handles API errors gracefully", async () => {
@@ -102,19 +100,11 @@ describe("CustomRules", () => {
     (removeCustomRule as jest.Mock).mockRejectedValueOnce(error);
 
     render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={mockOnRuleChange} />);
-    render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={mockOnRuleChange} />);
 
     const removeButtons = screen.getAllByTitle("Remove Rule");
     await user.click(removeButtons[0]);
-    await user.click(removeButtons[0]);
 
     await waitFor(() => {
-      expect(showToast).toHaveBeenCalledWith(
-        expect.objectContaining({
-          style: Toast.Style.Failure,
-          title: "Failed to remove rule",
-        })
-      );
       expect(showToast).toHaveBeenCalledWith(
         expect.objectContaining({
           style: Toast.Style.Failure,

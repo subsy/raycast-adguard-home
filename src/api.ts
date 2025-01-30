@@ -264,19 +264,15 @@ export async function getDetailedStats(): Promise<DetailedStats> {
   const preferences = getPreferenceValues<Preferences>();
   const url = `${preferences.serverUrl}/control/stats`;
 
-
   const response = await fetch(url, {
     headers: getAuthHeaders(),
   });
-
 
   if (!response.ok) {
     throw new Error(`Failed to fetch detailed stats: ${response.statusText}`);
   }
 
-
   const data = await response.json();
-
 
   return {
     time_units: data.time_units || "hours",
