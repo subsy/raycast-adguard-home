@@ -216,8 +216,6 @@ export async function removeCustomRule(rule: string): Promise<void> {
   // Filter out the rule to remove
   const newRules = rules.filter((r) => r.text !== rule);
 
-  const newRules = rules.filter((r) => r.text !== rule);
-
   const preferences = getPreferenceValues<Preferences>();
   const response = await fetch(`${preferences.serverUrl}/control/filtering/set_rules`, {
     method: "POST",
@@ -225,7 +223,6 @@ export async function removeCustomRule(rule: string): Promise<void> {
       ...getAuthHeaders(),
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ rules: newRules.map((r) => r.text) }),
     body: JSON.stringify({ rules: newRules.map((r) => r.text) }),
   });
 
@@ -260,7 +257,6 @@ export async function getStats(): Promise<Stats> {
     blocked_filtering: data.num_blocked_filtering || 0,
     replaced_safebrowsing: data.num_replaced_safebrowsing || 0,
     replaced_parental: data.num_replaced_parental || 0,
-    replaced_parental: data.num_replaced_parental || 0,
   };
 }
 
@@ -284,11 +280,9 @@ export async function getDetailedStats(): Promise<DetailedStats> {
 
   return {
     time_units: data.time_units || "hours",
-    time_units: data.time_units || "hours",
     top_clients: data.top_clients || [],
     top_queried_domains: data.top_queried_domains || [],
     top_blocked_domains: data.top_blocked_domains || [],
-    top_upstreams_responses: data.top_upstreams_responses || [],
     top_upstreams_responses: data.top_upstreams_responses || [],
   };
 }
@@ -296,6 +290,4 @@ export async function getDetailedStats(): Promise<DetailedStats> {
 export function getAdGuardHomeUrl(): string {
   const preferences = getPreferenceValues<Preferences>();
   return preferences.serverUrl;
-}
-
 }

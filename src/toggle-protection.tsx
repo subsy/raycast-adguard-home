@@ -160,9 +160,7 @@ export default function Command() {
                 title={status?.protection_enabled ? "Disable Protection" : "Enable Protection"}
                 onAction={handleToggleProtection}
                 icon={{
-                icon={{
                   source: status?.protection_enabled ? Icon.XMarkCircle : Icon.CheckCircle,
-                  tintColor: status?.protection_enabled ? Color.Red : Color.Green,
                   tintColor: status?.protection_enabled ? Color.Red : Color.Green,
                 }}
               />
@@ -191,8 +189,6 @@ export default function Command() {
             <ActionPanel.Section>
               <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#`} />
               <Action
-              <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#`} />
-              <Action
                 title="Refresh Status"
                 icon={Icon.ArrowClockwise}
                 onAction={fetchStatus}
@@ -204,6 +200,4 @@ export default function Command() {
       />
     </List>
   );
-}
-
 }

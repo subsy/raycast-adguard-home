@@ -18,11 +18,6 @@ describe("CustomRules", () => {
     return { user };
   };
 
-  const setup = async () => {
-    const user = userEvent.setup();
-    return { user };
-  };
-
   const mockRules = [
     { enabled: true, text: "||example.com^" },
     { enabled: false, text: "@@allowlist.com" },
@@ -50,17 +45,6 @@ describe("CustomRules", () => {
   });
 
   it("handles rule removal", async () => {
-    const onRuleChange = jest.fn();
-    render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={onRuleChange} />);
-
-    await act(async () => {
-      const firstListItem = screen.getAllByTestId("list-item")[0];
-      const removeButton = within(firstListItem).getByRole("button", { name: /remove/i });
-      await userEvent.click(removeButton);
-    });
-
-    expect(removeCustomRule).toHaveBeenCalled();
-    expect(onRuleChange).toHaveBeenCalled();
     const onRuleChange = jest.fn();
     render(<CustomRules rules={mockRules} isLoading={false} onRuleChange={onRuleChange} />);
 
@@ -114,7 +98,6 @@ describe("CustomRules", () => {
 
   it("handles API errors gracefully", async () => {
     const { user } = await setup();
-    const { user } = await setup();
     const error = new Error("API Error");
     (removeCustomRule as jest.Mock).mockRejectedValueOnce(error);
 
@@ -140,6 +123,4 @@ describe("CustomRules", () => {
       );
     });
   });
-});
-
 });
