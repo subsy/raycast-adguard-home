@@ -27,7 +27,7 @@ export default function Command() {
     try {
       const newState = !status.protection_enabled;
       await toggleProtection(newState);
-      setStatus(prev => prev ? { ...prev, protection_enabled: newState } : null);
+      setStatus((prev) => (prev ? { ...prev, protection_enabled: newState } : null));
       showToast({
         style: Toast.Style.Success,
         title: `Protection ${newState ? "enabled" : "disabled"}`,
@@ -50,35 +50,34 @@ export default function Command() {
       <List.Item
         title="Protection Status"
         subtitle={status?.protection_enabled ? "Protection is Active" : "Protection is Disabled"}
-        icon={{ 
+        icon={{
           source: status?.protection_enabled ? Icon.CheckCircle : Icon.XMarkCircle,
-          tintColor: status?.protection_enabled ? Color.Green : Color.Red
+          tintColor: status?.protection_enabled ? Color.Green : Color.Red,
         }}
-        accessories={[{ 
-          text: status?.protection_enabled ? "Enabled" : "Disabled",
-          icon: { 
-            source: status?.protection_enabled ? Icon.CheckCircle : Icon.XMarkCircle,
-            tintColor: status?.protection_enabled ? Color.Green : Color.Red
-          }
-        }]}
+        accessories={[
+          {
+            text: status?.protection_enabled ? "Enabled" : "Disabled",
+            icon: {
+              source: status?.protection_enabled ? Icon.CheckCircle : Icon.XMarkCircle,
+              tintColor: status?.protection_enabled ? Color.Green : Color.Red,
+            },
+          },
+        ]}
         actions={
           <ActionPanel>
             <ActionPanel.Section>
               <Action
                 title={status?.protection_enabled ? "Disable Protection" : "Enable Protection"}
                 onAction={handleToggleProtection}
-                icon={{ 
+                icon={{
                   source: status?.protection_enabled ? Icon.XMarkCircle : Icon.CheckCircle,
-                  tintColor: status?.protection_enabled ? Color.Red : Color.Green
+                  tintColor: status?.protection_enabled ? Color.Red : Color.Green,
                 }}
               />
             </ActionPanel.Section>
             <ActionPanel.Section>
-              <Action.OpenInBrowser
-                title="Open in AdGuard Home"
-                url={`${getAdGuardHomeUrl()}/#`}
-              />
-              <Action 
+              <Action.OpenInBrowser title="Open in Adguard Home" url={`${getAdGuardHomeUrl()}/#`} />
+              <Action
                 title="Refresh Status"
                 icon={Icon.ArrowClockwise}
                 onAction={fetchStatus}
@@ -90,4 +89,4 @@ export default function Command() {
       />
     </List>
   );
-} 
+}

@@ -29,7 +29,7 @@ export default function Command() {
 
   async function handleToggleProtection() {
     if (!status) return;
-    
+
     try {
       await toggleProtection(!status.protection_enabled);
       await fetchStatus();
@@ -83,11 +83,7 @@ export default function Command() {
       isLoading={isLoading}
       navigationTitle="AdGuard Home Control"
       searchBarAccessory={
-        <List.Dropdown
-          tooltip="Select View"
-          onChange={setSelectedTab}
-          value={selectedTab}
-        >
+        <List.Dropdown tooltip="Select View" onChange={setSelectedTab} value={selectedTab}>
           <List.Dropdown.Item title="Status" value="status" />
           <List.Dropdown.Item title="Query Log" value="queryLog" />
           <List.Dropdown.Item title="Custom Rules" value="customRules" />
@@ -114,7 +110,7 @@ export default function Command() {
           <List.Item
             title="DNS Queries Today"
             icon={Icon.Document}
-            accessories={[{ text: status?.dns_queries_today?.toString() ?? "0" }]}
+            accessories={[{ text: status?.dns_queries?.toString() ?? "0" }]}
           />
           <List.Item
             title="Blocked Queries Today"
@@ -123,16 +119,10 @@ export default function Command() {
           />
         </>
       )}
-      {selectedTab === "queryLog" && (
-        <QueryLog entries={queryLog} isLoading={isLoading} />
-      )}
+      {selectedTab === "queryLog" && <QueryLog entries={queryLog} isLoading={isLoading} />}
       {selectedTab === "customRules" && (
-        <CustomRules
-          rules={customRules}
-          isLoading={isLoading}
-          onRuleChange={fetchCustomRules}
-        />
+        <CustomRules rules={customRules} isLoading={isLoading} onRuleChange={fetchCustomRules} />
       )}
     </List>
   );
-} 
+}
