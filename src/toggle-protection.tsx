@@ -136,6 +136,7 @@ export default function Command() {
     <List isLoading={isLoading}>
       <List.Item
         title="Protection Status"
+        subtitle={status?.protection_enabled ? "Protection is Active" : "Protection is Disabled"}
         icon={{
           source: status?.protection_enabled ? Icon.CheckCircle : remainingTime ? Icon.Clock : Icon.XMarkCircle,
           tintColor: status?.protection_enabled ? Color.Green : remainingTime ? Color.Orange : Color.Red,
