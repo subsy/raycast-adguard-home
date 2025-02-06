@@ -137,8 +137,16 @@ export default function Command() {
       <List.Item
         title="Protection Status"
         icon={{
-          source: status?.protection_enabled ? Icon.CheckCircle : Icon.Clock,
-          tintColor: status?.protection_enabled ? Color.Green : Color.Orange,
+          source: status?.protection_enabled 
+            ? Icon.CheckCircle 
+            : remainingTime 
+              ? Icon.Clock 
+              : Icon.XMarkCircle,
+          tintColor: status?.protection_enabled 
+            ? Color.Green 
+            : remainingTime 
+              ? Color.Orange 
+              : Color.Red,
         }}
         accessories={[
           {
@@ -148,8 +156,16 @@ export default function Command() {
               ? `Disabled (${remainingTime} remaining)`
               : "Protection Disabled",
             icon: {
-              source: status?.protection_enabled ? Icon.CheckCircle : Icon.Clock,
-              tintColor: status?.protection_enabled ? Color.Green : Color.Orange,
+              source: status?.protection_enabled 
+                ? Icon.CheckCircle 
+                : remainingTime 
+                  ? Icon.Clock 
+                  : Icon.XMarkCircle,
+              tintColor: status?.protection_enabled 
+                ? Color.Green 
+                : remainingTime 
+                  ? Color.Orange 
+                  : Color.Red,
             },
           },
         ]}
